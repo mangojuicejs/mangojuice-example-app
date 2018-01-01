@@ -6,8 +6,8 @@
   "scripts": {
     "build": "webpack",
     "watch": "webpack --watch",
-    "test:flow": "flow check ./src",
-    "dev": "webpack-dev-server --port 3000"
+    "test": "flow check ./src",
+    "start": "webpack-dev-server --port 3000"
   },
   "author": "Artem Artemev <viiv.c58@gmail.com>",
   "license": "MIT",

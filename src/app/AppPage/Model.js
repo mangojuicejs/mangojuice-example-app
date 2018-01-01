@@ -1,7 +1,7 @@
 // @flow
 import * as SearchForm from '../SearchForm';
 import * as SearchResults from '../SearchResults';
-import * as User from 'shared/User';
+import * as User from '../../shared/User';
 
 
 // Types
