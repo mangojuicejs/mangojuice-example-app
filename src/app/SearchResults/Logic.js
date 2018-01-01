@@ -19,6 +19,13 @@ export default class SearchResults extends LogicBase<Model.Model> {
     };
   }
 
+  port(exec: Function, destroyed: Promise<void>) {
+    const timer = setInterval(() => {
+      exec(this.Search(this.model.query));
+    }, 10000);
+    destroyed.then(() => clearInterval(timer));
+  }
+
   @cmd Search(query: string) {
     return [
       this.InitSearch(query),

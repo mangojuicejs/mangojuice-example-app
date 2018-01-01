@@ -8,11 +8,16 @@ import * as SearchResults from '../SearchResults';
 
 // Types
 type Props = { model: Model.Model };
+type Context = { Logic: LogicClass };
 
 
 // Views
-const AppPageView = ({ model }: Props) => (
+const AppPageView = ({ model }: Props, { Logic }: Context) => (
   <div>
+    {model.user && model.user.authorized && <div>Hello, {model.user.name}</div>}
+    {model.user && !model.user.authorized && (
+      <button onClick={Logic.Login}>Login</button>
+    )}
     <SearchForm.View model={model.form} />
     <SearchResults.View model={model.results} />
   </div>
