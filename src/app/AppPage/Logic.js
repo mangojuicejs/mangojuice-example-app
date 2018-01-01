@@ -3,7 +3,7 @@ import type { Model } from './Model';
 import { LogicBase, Command, cmd, child, logicOf, depends } from 'mangojuice-core';
 import * as SearchForm from '../SearchForm';
 import * as SearchResults from '../SearchResults';
-import * as Shared from 'shared/Main';
+import * as Shared from '../../shared/Main';
 
 
 export default class AppPage extends LogicBase<Model, Shared.Model> {
