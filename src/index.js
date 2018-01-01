@@ -2,24 +2,27 @@ import { run, mount, hydrate } from "mangojuice-core";
 import { Mounter } from "mangojuice-react";
 
 
-// Run the app usgin provided app and shared blocks
+// Run the app using provided app and shared blocks
 const start = (AppBlock, SharedBlock) => {
   const shared = run(SharedBlock);
   const app = run(AppBlock, { shared: shared.model });
+  const mountRes = mount(new Mounter('#content'), app, shared);
+
   return {
-    stop: mount(new Mounter('#content'), app, shared).stop,
+    stop: mountRes.stop,
     app: app.model,
     shared: shared.model
   };
 }
 
-// Run the initial app
+// Run the app for the first time
 let currRun = start(
   require('./app/AppPage'),
   require('./shared/Main')
 );
 
-// Watch for module changes and re-run the app
+// Watch for module changes and re-run the app with
+// new versions of app and shared blocks
 if(module.hot) {
   module.hot.accept(['./app/AppPage', './shared/Main'], function() {
     const appBlock = require('./app/AppPage');
