@@ -52,7 +52,8 @@ export default class SearchResults extends LogicBase<Model.Model> {
 
   @cmd HandleSearchFail(err: any) {
     return {
-      error: 'Something weird happened',
+      error: err && err.message || 'Some unkonwn error happened',
+      results: [],
       loading: false
     };
   }
