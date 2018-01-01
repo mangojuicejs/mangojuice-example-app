@@ -18,7 +18,7 @@ const fetch = window.fetch.bind(window);
  */
 export async function findResults({ model }: Props): Promise<Array<Model.SearchItemType>> {
   const { result, error } = await this.call(fetch,
-    `http://www.reddit.com/search.json?q=${model.query}`);
+    `https://www.reddit.com/search.json?q=${model.query}`);
   if (error) {
     throw new Error('Search was failed to execute');
   }
