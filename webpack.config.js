@@ -11,7 +11,7 @@ module.exports = {
       `webpack-dev-server/client?/`,
       "webpack/hot/only-dev-server",
       "regenerator-runtime/runtime",
-      "./src/client.js"
+      "./src/index.js"
     ]
   },
 
