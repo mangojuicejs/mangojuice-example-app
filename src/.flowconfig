@@ -1,0 +1,19 @@
+[include]
+../node_modules/
+
+[ignore]
+.*/__tests__/.*
+.*/node_modules/.*/node_modules/.*
+.*/node_modules/.*/src/.*
+.*/node_modules/.*/test/.*
+
+[options]
+esproposal.class_instance_fields=enable
+esproposal.class_static_fields=enable
+esproposal.export_star_as=enable
+esproposal.decorators=ignore
+module.name_mapper='^app/\(.*\)$' -> '<PROJECT_ROOT>/app/\1'
+module.name_mapper='^shared/\(.*\)$' -> '<PROJECT_ROOT>/shared/\1'
+
+[libs]
+../node_modules/mangojuice-core/flow-types.js
