@@ -30,9 +30,9 @@
     "webpack-dev-server": "2.9.7"
   },
   "dependencies": {
-    "mangojuice-core": "1.2.4",
-    "mangojuice-lazy": "1.2.4",
-    "mangojuice-react": "1.2.4",
+    "mangojuice-core": "1.2.6",
+    "mangojuice-lazy": "1.2.6",
+    "mangojuice-react": "1.2.6",
     "react": "16.2.0",
     "react-dom": "16.2.0"
   }

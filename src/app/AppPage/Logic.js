@@ -20,7 +20,7 @@ export default class AppPage extends LogicBase<Model, Shared.Model> {
     };
   }
 
-  hub(cmd: Command) {
+  hubAfter(cmd: Command) {
     if (cmd.is(logicOf(this.model.form).Search)) {
       return logicOf(this.model.results).Search(this.model.form.query);
     }
