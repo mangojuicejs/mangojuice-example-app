@@ -67,7 +67,7 @@ export default class SearchResults extends LogicBase<Model> {
 
   SetResultsList(results: Array<SearchItemType>) {
     return {
-      results: results.map(x => child(ResultItem, { text: x.article })),
+      results: results.map(x => child(ResultItem.Logic, { text: x.article })),
       loading: false
     };
   }

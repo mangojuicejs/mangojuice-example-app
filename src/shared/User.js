@@ -11,7 +11,7 @@ export type Model = {
 
 // Events
 export const Events = {
-  Login: new Event()
+  Login: Event.create()
 };
 
 
