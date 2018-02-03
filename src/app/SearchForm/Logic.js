@@ -1,17 +1,33 @@
 // @flow
-import type { Model } from './Model';
 import { LogicBase, cmd, child } from 'mangojuice-core';
+import { Search } from './Events';
 
 
+// Types
+export type FactoryProps = {
+};
+export type Model = {
+  query: string,
+  count: number
+};
+
+
+/**
+ * Form for searching the item
+ */
 export default class SearchForm extends LogicBase<Model> {
-  computed() {
+  prepare() {
     return {
+      query: '',
       count: () => this.model.query.length
     };
   }
-  @cmd SetQuery(e: any) {
+
+  SetQuery(e: any) {
     return { query: e.target.value };
   }
-  @cmd Search() {
+
+  Search() {
+    return Search({ query: this.model.query });
   }
 }

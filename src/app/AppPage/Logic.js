@@ -1,32 +1,34 @@
 // @flow
-import type { Model } from './Model';
-import { LogicBase, Command, cmd, child, logicOf, depends } from 'mangojuice-core';
+import { LogicBase, Command, child, logicOf, depends } from 'mangojuice-core';
 import * as SearchForm from '../SearchForm';
 import * as SearchResults from '../SearchResults';
+import * as User from '../../shared/User';
 import * as Shared from '../../shared/Main';
 
 
-export default class AppPage extends LogicBase<Model, Shared.Model> {
-  children() {
-    return {
-      form: SearchForm.Logic,
-      results: SearchResults.Logic
-    };
-  }
+// Types
+export type FactoryProps = {
+};
+export type Model = {
+  form: SearchForm.Model,
+  results: SearchResults.Model,
+  user: ?User.Model
+};
 
-  computed() {
+
+/**
+ * Root logic of the app
+ */
+export default class AppPage extends LogicBase<Model, Shared.Model> {
+  prepare(props: FactoryProps) {
     return {
+      form: SearchForm,
+      results: SearchResults,
       user: depends(this.shared.user).compute(() => this.shared.user)
     };
   }
 
-  hubAfter(cmd: Command) {
-    if (cmd.is(logicOf(this.model.form).Search)) {
-      return logicOf(this.model.results).Search(this.model.form.query);
-    }
-  }
-
-  @cmd Login() {
-    return logicOf(this.shared.user).Login();
+  Login() {
+    return User.Events.Login;
   }
 }
