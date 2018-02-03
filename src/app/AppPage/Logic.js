@@ -1,5 +1,5 @@
 // @flow
-import { LogicBase, Command, child, logicOf, depends } from 'mangojuice-core';
+import { LogicBase, Command, child, depends } from 'mangojuice-core';
 import * as SearchForm from '../SearchForm';
 import * as SearchResults from '../SearchResults';
 import * as User from '../../shared/User';

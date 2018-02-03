@@ -1,5 +1,5 @@
 // @flow
-import { LogicBase, cmd, child } from 'mangojuice-core';
+import { LogicBase, child } from 'mangojuice-core';
 
 
 // Types

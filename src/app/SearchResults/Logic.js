@@ -1,5 +1,5 @@
 // @flow
-import { LogicBase, Event, cmd, child, task } from 'mangojuice-core';
+import { LogicBase, Event, child, task } from 'mangojuice-core';
 import * as SearchForm from '../SearchForm';
 import * as ResultItem from '../ResultItem';
 import * as Tasks from './Tasks';
