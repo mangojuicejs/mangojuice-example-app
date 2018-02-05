@@ -23,6 +23,10 @@ export const Logic = class User extends LogicBase<Model> {
     }
   }
 
+  prepare() {
+    return this.logout();
+  }
+
   login() {
     return {
       authorized: true,
