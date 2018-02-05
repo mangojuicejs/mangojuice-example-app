@@ -38,8 +38,8 @@ export default class AppPage extends LogicBase<Model> {
     return User.Events.Login;
   }
 
-  search() {
-    const props = { query: this.model.form.query };
+  search(event: SearchForm.Events.Search) {
+    const props = { query: event.query };
     return { results: child(SearchResults.Logic, props) };
   }
 }
