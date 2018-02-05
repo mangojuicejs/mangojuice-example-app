@@ -1,12 +1,11 @@
 // @flow
-import * as Model from './Model';
+import type { Model } from './Logic';
 import * as React from 'mangojuice-react';
-import LogicClass from './Logic';
 import * as ResultItem from '../ResultItem';
 
 
 // Types
-type Props = { model: Model.Model };
+type Props = { model: Model };
 
 
 // Views

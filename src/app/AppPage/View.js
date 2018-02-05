@@ -1,5 +1,5 @@
 // @flow
-import * as Model from './Model';
+import type { Model } from './Logic';
 import * as React from 'mangojuice-react';
 import LogicClass from './Logic';
 import * as SearchForm from '../SearchForm';
@@ -7,7 +7,7 @@ import * as SearchResults from '../SearchResults';
 
 
 // Types
-type Props = { model: Model.Model };
+type Props = { model: Model };
 type Context = { Logic: LogicClass };
 
 
