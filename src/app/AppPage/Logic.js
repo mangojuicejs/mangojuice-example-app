@@ -6,8 +6,6 @@ import * as User from '../User';
 
 
 // Types
-export type FactoryProps = {
-};
 export type Model = {
   form: SearchForm.Model,
   results: SearchResults.Model,
@@ -19,7 +17,7 @@ export type Model = {
  * Root logic of the app
  */
 export default class AppPage extends LogicBase<Model> {
-  prepare(props: FactoryProps) {
+  prepare() {
     return {
       form: child(SearchForm.Logic)
         .on(SearchForm.Events.Search, this.search),

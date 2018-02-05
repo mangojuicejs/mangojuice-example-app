@@ -4,8 +4,6 @@ import * as Events from './Events';
 
 
 // Types
-export type FactoryProps = {
-};
 export type Model = {
   query: string,
   count: number
