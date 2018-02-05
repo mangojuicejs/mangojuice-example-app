@@ -1,6 +1,6 @@
 // @flow
 import { LogicBase, child } from 'mangojuice-core';
-import { Search } from './Events';
+import * as Events from './Events';
 
 
 // Types
@@ -28,6 +28,6 @@ export default class SearchForm extends LogicBase<Model> {
   }
 
   Search() {
-    return Search({ query: this.model.query });
+    return Events.Search({ query: this.model.query });
   }
 }

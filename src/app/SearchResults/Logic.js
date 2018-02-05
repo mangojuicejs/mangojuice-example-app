@@ -50,19 +50,11 @@ export default class SearchResults extends LogicBase<Model> {
 
   Search(query: string) {
     return [
-      this.InitSearch(query),
-      this.DoSearch()
+      { query, loading: true },
+      task(Tasks.findResults)
+        .success(this.SetResultsList)
+        .fail(this.HandleSearchFail)
     ];
-  }
-
-  DoSearch() {
-    return task(Tasks.findResults)
-      .success(this.SetResultsList)
-      .fail(this.HandleSearchFail);
-  }
-
-  InitSearch(query: string) {
-    return { query, loading: true };
   }
 
   SetResultsList(results: Array<SearchItemType>) {

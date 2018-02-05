@@ -2,8 +2,7 @@
 import { LogicBase, Command, child, depends } from 'mangojuice-core';
 import * as SearchForm from '../SearchForm';
 import * as SearchResults from '../SearchResults';
-import * as User from '../../shared/User';
-import * as Shared from '../../shared/Main';
+import * as User from '../User';
 
 
 // Types
@@ -19,12 +18,18 @@ export type Model = {
 /**
  * Root logic of the app
  */
-export default class AppPage extends LogicBase<Model, Shared.Model> {
+export default class AppPage extends LogicBase<Model> {
   prepare(props: FactoryProps) {
     return {
       form: SearchForm.Logic,
       results: SearchResults.Logic,
-      user: depends(this.shared.user).compute(() => this.shared.user)
+      user: child(User.Logic)
+    };
+  }
+
+  context() {
+    return {
+      user: this.model.user
     };
   }
 
