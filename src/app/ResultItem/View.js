@@ -13,9 +13,9 @@ type Context = { Logic: LogicClass };
 const ResultItemView = ({ model }: Props, { Logic }: Context) => (
   <div>
     {model.text}<br />
-    <button onClick={Logic.Increment(1)}>+</button>
+    <button onClick={Logic.incrementPositive}>+</button>
     {model.counter}
-    <button onClick={Logic.Increment(-1)}>-</button>
+    <button onClick={Logic.incrementNegative}>-</button>
   </div>
 );
 

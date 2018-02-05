@@ -19,18 +19,18 @@ export const Events = {
 export const Logic = class User extends LogicBase<Model> {
   hub(event: Event) {
     if (event instanceof Events.Login) {
-      return this.Login;
+      return this.login;
     }
   }
 
-  Login() {
+  login() {
     return {
       authorized: true,
       name: 'Test User'
     };
   }
 
-  Logout() {
+  logout() {
     return {
       authorized: false,
       name: ''

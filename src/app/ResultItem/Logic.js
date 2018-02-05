@@ -21,7 +21,15 @@ export default class ResultItem extends LogicBase<Model> {
     };
   }
 
-  Increment(amount: number) {
+  increment(amount: number) {
     return { counter: this.model.counter + amount };
+  }
+
+  incrementPositive() {
+    return this.increment(1);
+  }
+
+  incrementNegative() {
+    return this.increment(-1);
   }
 }

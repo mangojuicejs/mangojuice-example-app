@@ -23,11 +23,11 @@ export default class SearchForm extends LogicBase<Model> {
     };
   }
 
-  SetQuery(e: any) {
+  setQuery(e: any) {
     return { query: e.target.value };
   }
 
-  Search() {
+  search() {
     return Events.Search({ query: this.model.query });
   }
 }

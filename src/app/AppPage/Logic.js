@@ -21,9 +21,10 @@ export type Model = {
 export default class AppPage extends LogicBase<Model> {
   prepare(props: FactoryProps) {
     return {
-      form: SearchForm.Logic,
+      form: child(SearchForm.Logic)
+        .on(SearchForm.Events.Search, this.search),
       results: SearchResults.Logic,
-      user: child(User.Logic)
+      user: User.Logic
     };
   }
 
@@ -33,7 +34,12 @@ export default class AppPage extends LogicBase<Model> {
     };
   }
 
-  Login() {
+  login() {
     return User.Events.Login;
+  }
+
+  search() {
+    const props = { query: this.model.form.query };
+    return { results: child(SearchResults.Logic, props) };
   }
 }

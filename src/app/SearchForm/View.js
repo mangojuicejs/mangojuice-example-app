@@ -13,8 +13,8 @@ type Context = { Logic: LogicClass };
 const SearchFormView = ({ model }: Props, { Logic }: Context) => (
   <div>
     <h2>Complicated Search Form</h2>
-    <input value={model.query} onChange={Logic.SetQuery} /><br />
-    <button onClick={Logic.Search}>Search {model.count} chars</button>
+    <input value={model.query} onChange={Logic.setQuery} /><br />
+    <button onClick={Logic.search}>Search {model.count} chars</button>
   </div>
 );
 
