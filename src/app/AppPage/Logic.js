@@ -15,7 +15,7 @@ export type Model = {
 
 // Context with commonly used models, like user, router, etc
 export const APP_CONTEXT = () => ({
-  user: child(User.Logic)
+  user: child(User.Logic).create()
 });
 
 /**
@@ -25,8 +25,8 @@ export default class AppPage extends LogicBase<Model> {
   create() {
     return [
       context(APP_CONTEXT).create(),
-      { form: child(SearchForm.Logic)
-        results: child(SearchResults.Logic) }
+      { form: child(SearchForm.Logic).create()
+        results: child(SearchResults.Logic).create() }
     ];
   }
 
