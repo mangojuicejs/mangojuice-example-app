@@ -1,5 +1,5 @@
 // @flow
-import { LogicBase, Command, child, depends } from 'mangojuice-core';
+import { Event, child, context } from 'mangojuice-core';
 import * as SearchForm from '../SearchForm';
 import * as SearchResults from '../SearchResults';
 import * as User from '../User';
@@ -13,31 +13,39 @@ export type Model = {
 };
 
 
+// Context with commonly used models, like user, router, etc
+export const APP_CONTEXT = () => ({
+  user: child(User.Logic)
+});
+
 /**
  * Root logic of the app
  */
 export default class AppPage extends LogicBase<Model> {
-  prepare() {
-    return {
-      form: child(SearchForm.Logic)
-        .on(SearchForm.Events.Search, this.search),
-      results: SearchResults.Logic,
-      user: User.Logic
-    };
+  create() {
+    return [
+      context(APP_CONTEXT).create(),
+      { form: child(SearchForm.Logic)
+        results: child(SearchResults.Logic) }
+    ];
   }
 
-  context() {
-    return {
-      user: this.model.user
-    };
+  update(event: Event) {
+    return [
+      event.when(SearchForm.Events.Search, (evt) => this.search(evt))
+    ];
   }
 
   login() {
-    return User.Events.Login;
+    return context(APP_CONTEXT).update({
+      user: child(User.Logic).update(User.Events.Login)
+    });
   }
 
-  search(event: SearchForm.Events.Search) {
-    const props = { query: event.query };
-    return { results: child(SearchResults.Logic, props) };
+  search({ query }) {
+    return {
+      results: child(SearchResults.Logic)
+        .update(SearchResults.Events.Search(query))
+      };
   }
 }

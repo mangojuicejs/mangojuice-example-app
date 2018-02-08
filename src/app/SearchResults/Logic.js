@@ -1,6 +1,7 @@
 // @flow
 import { LogicBase, Event, child, task } from 'mangojuice-core';
 import * as ResultItem from '../ResultItem';
+import * as Events from './Events';
 import * as Tasks from './Tasks';
 
 
@@ -24,14 +25,7 @@ export type Model = {
  * Search results
  */
 export default class SearchResults extends LogicBase<Model> {
-  port(exec: Function, destroyed: Promise<void>) {
-    const timer = setInterval(() => {
-      exec(this.search(this.model.query));
-    }, 10000);
-    destroyed.then(() => clearInterval(timer));
-  }
-
-  prepare({ query }: FactoryProps = {}) {
+  create({ query }: FactoryProps = {}) {
     const initModel = {
       results: [],
       query: '',
@@ -42,8 +36,18 @@ export default class SearchResults extends LogicBase<Model> {
     };
     return [
       initModel,
+      this.startIntervalUpdater,
       query && this.search(query)
     ];
+  }
+
+  update(event: Event) {
+    return event.when(Events.Search, ({ query }) => this.search(query));
+  }
+
+  startIntervalUpdater() {
+    return task(Tasks.intervalTrigger)
+      .notify(() => this.search(this.model.query));
   }
 
   search(query: string) {
@@ -57,7 +61,7 @@ export default class SearchResults extends LogicBase<Model> {
 
   setResultsList(results: Array<SearchItemType>) {
     return {
-      results: results.map(x => child(ResultItem.Logic, { text: x.article })),
+      results: results.map(x => child(ResultItem.Logic).create({ text: x.article })),
       loading: false
     };
   }

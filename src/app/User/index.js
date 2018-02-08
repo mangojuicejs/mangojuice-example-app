@@ -1,5 +1,5 @@
 // @flow
-import { LogicBase, Event } from 'mangojuice-core';
+import { LogicBase, Event, evt } from 'mangojuice-core';
 
 
 // Model
@@ -11,20 +11,20 @@ export type Model = {
 
 // Events
 export const Events = {
-  Login: Event.create()
+  Login: evt()
 };
 
 
 // Logic
 export const Logic = class User extends LogicBase<Model> {
-  hub(event: Event) {
-    if (event instanceof Events.Login) {
-      return this.login;
-    }
+  create() {
+    return this.logout();
   }
 
-  prepare() {
-    return this.logout();
+  update(event: Event) {
+    return [
+      event.when(Events.Login, () => this.login)
+    ];
   }
 
   login() {

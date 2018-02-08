@@ -1,5 +1,6 @@
 // @flow
-import { LogicBase, child } from 'mangojuice-core';
+import { LogicBase } from 'mangojuice-core';
+import * as Events from './Events';
 
 
 // Types
@@ -14,22 +15,21 @@ export type Model = {
 
 // Logic
 export default class ResultItem extends LogicBase<Model> {
-  prepare({ text = 'No text' }: FactoryProps = {}) {
+  create({ text = 'No text' }: FactoryProps = {}) {
     return {
       counter: 0,
       text
     };
   }
 
+  update(event: Event) {
+    return [
+      event.when(Event.Increment, () => this.increment(1)),
+      event.when(Event.Decrement, () => this.increment(-1))
+    ];
+  }
+
   increment(amount: number) {
     return { counter: this.model.counter + amount };
-  }
-
-  incrementPositive() {
-    return this.increment(1);
-  }
-
-  incrementNegative() {
-    return this.increment(-1);
   }
 }

@@ -1,5 +1,5 @@
 // @flow
-import { LogicBase, child } from 'mangojuice-core';
+import { LogicBase, Event, child } from 'mangojuice-core';
 import * as Events from './Events';
 
 
@@ -14,11 +14,15 @@ export type Model = {
  * Form for searching the item
  */
 export default class SearchForm extends LogicBase<Model> {
-  prepare() {
+  create() {
     return {
       query: '',
       count: () => this.model.query.length
     };
+  }
+
+  update(event: Event) {
+    return event.when(Events.Search, () => this.search);
   }
 
   setQuery(e: any) {
@@ -26,6 +30,6 @@ export default class SearchForm extends LogicBase<Model> {
   }
 
   search() {
-    return Events.Search({ query: this.model.query });
+    return Events.Search(this.model.query);
   }
 }

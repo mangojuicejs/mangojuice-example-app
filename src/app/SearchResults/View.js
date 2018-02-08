@@ -1,21 +1,22 @@
 // @flow
 import type { Model } from './Logic';
-import * as React from 'mangojuice-react';
+import * as React from 'react';
+import { Subscribe } from 'mangojuice-react';
 import * as ResultItem from '../ResultItem';
 
 
-// Types
-type Props = { model: Model };
-
-
 // Views
-const SearchResultsView = ({ model }: Props) => (
-  <div>
-    {model.loading && <div>Loading...</div>}
-    {model.error && <div>{model.error}</div>}
-    {model.hasNoResults && <div>No results found</div>}
-    {model.results.map((x, i) => <ResultItem.View model={x} />)}
-  </div>
+const SearchResultsView = ({ model }) => (
+  <Subscribe to={model}>
+    {({ loading, error, hasNoResults, results }) => (
+      <div>
+        {loading && <div>Loading...</div>}
+        {error && <div>{error}</div>}
+        {hasNoResults && <div>No results found</div>}
+        {results.map((x, i) => <ResultItem.View model={x} />)}
+      </div>
+    )}
+  </Subscribe>
 );
 
 export default SearchResultsView;

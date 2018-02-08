@@ -1,16 +1,15 @@
-import { run, mount, hydrate } from "mangojuice-core";
-import { Mounter } from "mangojuice-react";
+import * as ReactDOM from 'react-dom';
+import { run, mount } from "mangojuice-core";
 
+
+// Constants
+const container = document.querySelector('#content');
 
 // Run the app using provided app and shared blocks
-const start = (AppBlock) => {
-  const app = run(AppBlock);
-  const mountRes = mount(new Mounter('#content'), app, shared);
-
-  return {
-    stop: mountRes.stop,
-    app: app.model
-  };
+const start = (AppBlock, model = {}) => {
+  const app = run(AppBlock, { model });
+  React.render(container, <AppBlock.View model={app.model} />);
+  return app;
 }
 
 // Run the app for the first time
@@ -19,9 +18,9 @@ let currRun = start(require('./app/AppPage'));
 // Watch for module changes and re-run the app with
 // new versions of app and shared blocks
 if(module.hot) {
-  module.hot.accept(['./app/AppPage', './shared/Main'], function() {
-    const appBlock = require('./app/AppPage');
-    currRun.stop();
-    currRun = start(hydrate(require('./app/AppPage'), currRun.app));
+  module.hot.accept(['./app/AppPage'], function() {
+    ReactDOM.unmountComponentAtNode(container);
+    currRun.proc.destroy();
+    currRun = start(require('./app/AppPage'), currRun.app.model);
   });
 }
