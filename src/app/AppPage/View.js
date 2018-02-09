@@ -1,6 +1,6 @@
 // @flow
 import type { Model } from './Logic';
-import * as React as 'react';
+import * as React from 'react';
 import { Subscribe } from 'mangojuice-react';
 import { APP_CONTEXT } from './Logic';
 import * as User from '../User';
