@@ -1,60 +1,87 @@
 // @flow
-import * as Model from './Model';
-import { LogicBase, cmd, child, task } from 'mangojuice-core';
+import { LogicBase, Event, child, task, context } from 'mangojuice-core';
+import { APP_CONTEXT } from '../AppPage/Logic';
+import * as User from '../User';
 import * as ResultItem from '../ResultItem';
+import * as Events from './Events';
 import * as Tasks from './Tasks';
 
 
-export default class SearchResults extends LogicBase<Model.Model> {
-  children() {
-    return {
-      results: ResultItem.Logic
-    };
-  }
+// Types
+export type SearchItemType = {
+  article: string
+};
+export type FactoryProps = {
+  query?: string
+};
+export type Model = {
+  results: Array<ResultItem.Model>,
+  query: string,
+  loading: bool,
+  error: string,
+  hasNoResults: bool
+};
 
-  computed() {
-    return {
-      hasNoResults: () =>
-        !this.model.results.length && !this.model.loading
-    };
-  }
 
-  port(exec: Function, destroyed: Promise<void>) {
-    const timer = setInterval(() => {
-      exec(this.Search(this.model.query));
-    }, 10000);
-    destroyed.then(() => clearInterval(timer));
-  }
-
-  @cmd Search(query: string) {
+/**
+ * Search results
+ */
+export default class SearchResults extends LogicBase<Model> {
+  create({ query }: FactoryProps = {}) {
     return [
-      this.InitSearch(query),
-      this.DoSearch()
+      {
+        results: [],
+        query: '',
+        loading: false,
+        error: '',
+        hasNoResults: () =>
+          !this.model.results.length && !this.model.loading
+      },
+      context(APP_CONTEXT),
+      this.startIntervalUpdater,
+      query && this.search(query)
     ];
   }
 
-  @cmd DoSearch() {
-    return task(Tasks.findResults)
-      .success(this.SetResultsList)
-      .fail(this.HandleSearchFail);
+  update(event: Event) {
+    return [
+      event.when(Events.Search, ({ query }) => this.search(query)),
+      event.when(User.Events.LoggedIn, () => this.doSomething)
+    ];
   }
 
-  @cmd InitSearch(query: string) {
-    return { query, loading: true };
+  startIntervalUpdater() {
+    return task(Tasks.intervalTrigger)
+      .notify(() => this.search(this.model.query));
   }
 
-  @cmd SetResultsList(results: Array<Model.SearchItemType>) {
+  search(query: string) {
+    return [
+      { query, loading: true },
+      task(Tasks.findResults)
+        .success(this.setResultsList)
+        .fail(this.handleSearchFail)
+    ];
+  }
+
+  setResultsList(results: Array<SearchItemType>) {
     return {
-      results: results.map(x => ResultItem.createModel({ text: x.article })),
+      results: results.map(x => child(ResultItem.Logic).create({ text: x.article })),
       loading: false
     };
   }
 
-  @cmd HandleSearchFail(err: any) {
+  handleSearchFail(err: any) {
     return {
       error: err && err.message || 'Some unkonwn error happened',
       results: [],
       loading: false
     };
+  }
+
+  doSomething() {
+    return context(APP_CONTEXT).get((appCtx) => ({
+      query: appCtx.user.name
+    }));
   }
 }

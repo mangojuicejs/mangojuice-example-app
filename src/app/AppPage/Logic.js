@@ -1,32 +1,54 @@
 // @flow
-import type { Model } from './Model';
-import { LogicBase, Command, cmd, child, logicOf, depends } from 'mangojuice-core';
+import { Event, child, context } from 'mangojuice-core';
 import * as SearchForm from '../SearchForm';
 import * as SearchResults from '../SearchResults';
-import * as Shared from '../../shared/Main';
+import * as User from '../User';
 
 
-export default class AppPage extends LogicBase<Model, Shared.Model> {
-  children() {
+// Types
+export type AppContext = {
+  user: User.Model
+};
+export type Model = {
+  form: SearchForm.Model,
+  results: SearchResults.Model,
+  appCtx: AppContext
+};
+
+
+// Context with commonly used models, like user, router, etc
+export const APP_CONTEXT = () => ({
+  user: child(User.Logic).create()
+});
+
+/**
+ * Root logic of the app
+ */
+export default class AppPage extends LogicBase<Model> {
+  create() {
+    return [
+      { appCtx: context(APP_CONTEXT).create() },
+      { form: child(SearchForm.Logic).create()
+        results: child(SearchResults.Logic).create() }
+    ];
+  }
+
+  update(event: Event) {
+    return [
+      event.when(SearchForm.Events.Search, (evt) => this.search(evt))
+    ];
+  }
+
+  login() {
+    return context(APP_CONTEXT).update({
+      user: child(User.Logic).update(User.Events.Login)
+    });
+  }
+
+  search({ query }) {
     return {
-      form: SearchForm.Logic,
-      results: SearchResults.Logic
+      results: child(SearchResults.Logic)
+        .update(SearchResults.Events.Search(query))
     };
-  }
-
-  computed() {
-    return {
-      user: depends(this.shared.user).compute(() => this.shared.user)
-    };
-  }
-
-  hubAfter(cmd: Command) {
-    if (cmd.is(logicOf(this.model.form).Search)) {
-      return logicOf(this.model.results).Search(this.model.form.query);
-    }
-  }
-
-  @cmd Login() {
-    return logicOf(this.shared.user).Login();
   }
 }

@@ -1,8 +1,8 @@
 // @flow
 import Logic from './Logic';
 import View from './View';
-import { createModel } from './Model';
+import Events from './Events';
 
-export default { View, Logic, createModel };
-export { View, Logic, createModel };
-export type { Model, FactoryProps } from './Model';
+export default { View, Logic, Events };
+export { View, Logic, Events };
+export type { Model, FactoryProps } from './Logic';

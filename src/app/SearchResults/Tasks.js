@@ -29,3 +29,10 @@ export async function findResults({ model }: Props): Promise<Array<Model.SearchI
     article: x.data.title
   }));
 }
+
+export async function intervalTrigger() {
+  while(true) {
+    await this.call(delay, 5000);
+    this.notify();
+  }
+}
