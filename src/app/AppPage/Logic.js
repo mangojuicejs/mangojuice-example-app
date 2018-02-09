@@ -6,10 +6,13 @@ import * as User from '../User';
 
 
 // Types
+export type AppContext = {
+  user: User.Model
+};
 export type Model = {
   form: SearchForm.Model,
   results: SearchResults.Model,
-  user: ?User.Model
+  appCtx: AppContext
 };
 
 
@@ -24,7 +27,7 @@ export const APP_CONTEXT = () => ({
 export default class AppPage extends LogicBase<Model> {
   create() {
     return [
-      context(APP_CONTEXT).create(),
+      { appCtx: context(APP_CONTEXT).create() },
       { form: child(SearchForm.Logic).create()
         results: child(SearchResults.Logic).create() }
     ];
@@ -46,6 +49,6 @@ export default class AppPage extends LogicBase<Model> {
     return {
       results: child(SearchResults.Logic)
         .update(SearchResults.Events.Search(query))
-      };
+    };
   }
 }

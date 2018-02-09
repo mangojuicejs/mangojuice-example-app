@@ -1,5 +1,7 @@
 // @flow
-import { LogicBase, Event, child, task } from 'mangojuice-core';
+import { LogicBase, Event, child, task, context } from 'mangojuice-core';
+import { APP_CONTEXT } from '../AppPage/Logic';
+import * as User from '../User';
 import * as ResultItem from '../ResultItem';
 import * as Events from './Events';
 import * as Tasks from './Tasks';
@@ -35,6 +37,7 @@ export default class SearchResults extends LogicBase<Model> {
         !this.model.results.length && !this.model.loading
     };
     return [
+      context(APP_CONTEXT),
       initModel,
       this.startIntervalUpdater,
       query && this.search(query)
@@ -42,7 +45,10 @@ export default class SearchResults extends LogicBase<Model> {
   }
 
   update(event: Event) {
-    return event.when(Events.Search, ({ query }) => this.search(query));
+    return [
+      event.when(Events.Search, ({ query }) => this.search(query)),
+      event.when(User.Events.Login, () => this.doSomething)
+    ];
   }
 
   startIntervalUpdater() {
@@ -72,5 +78,11 @@ export default class SearchResults extends LogicBase<Model> {
       results: [],
       loading: false
     };
+  }
+
+  doSomething() {
+    return context(APP_CONTEXT).get((appCtx) => ({
+      results: [ appCtx.user.name ]
+    }));
   }
 }
