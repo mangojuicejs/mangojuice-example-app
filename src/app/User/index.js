@@ -11,7 +11,8 @@ export type Model = {
 
 // Events
 export const Events = {
-  Login: evt()
+  Login: evt(),
+  LoggedIn: evt()
 };
 
 
@@ -22,16 +23,17 @@ export const Logic = class User extends LogicBase<Model> {
   }
 
   update(event: Event) {
-    return [
-      event.when(Events.Login, () => this.login)
-    ];
+    return event.when(Events.Login, () => this.login);
   }
 
   login() {
-    return {
-      authorized: true,
-      name: 'Test User'
-    };
+    return [
+      {
+        authorized: true,
+        name: 'Test User'
+      },
+      Events.LoggedIn
+    ];
   }
 
   logout() {

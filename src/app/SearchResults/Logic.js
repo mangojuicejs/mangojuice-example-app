@@ -28,17 +28,16 @@ export type Model = {
  */
 export default class SearchResults extends LogicBase<Model> {
   create({ query }: FactoryProps = {}) {
-    const initModel = {
-      results: [],
-      query: '',
-      loading: false,
-      error: '',
-      hasNoResults: () =>
-        !this.model.results.length && !this.model.loading
-    };
     return [
+      {
+        results: [],
+        query: '',
+        loading: false,
+        error: '',
+        hasNoResults: () =>
+          !this.model.results.length && !this.model.loading
+      },
       context(APP_CONTEXT),
-      initModel,
       this.startIntervalUpdater,
       query && this.search(query)
     ];
@@ -47,7 +46,7 @@ export default class SearchResults extends LogicBase<Model> {
   update(event: Event) {
     return [
       event.when(Events.Search, ({ query }) => this.search(query)),
-      event.when(User.Events.Login, () => this.doSomething)
+      event.when(User.Events.LoggedIn, () => this.doSomething)
     ];
   }
 
