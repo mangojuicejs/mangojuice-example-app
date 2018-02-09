@@ -82,7 +82,7 @@ export default class SearchResults extends LogicBase<Model> {
 
   doSomething() {
     return context(APP_CONTEXT).get((appCtx) => ({
-      results: [ appCtx.user.name ]
+      query: appCtx.user.name
     }));
   }
 }
